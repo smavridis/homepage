@@ -1,4 +1,7 @@
 /* eslint-disable react/no-array-index-key */
+import { existsSync, statSync, readdirSync } from "fs";
+import { join } from "path";
+
 import useSWR, { SWRConfig } from "swr";
 import Head from "next/head";
 import Script from "next/script";
@@ -51,6 +54,24 @@ export async function getStaticProps() {
     const services = await servicesResponse();
     const bookmarks = await bookmarksResponse();
     const widgets = await widgetsResponse();
+
+    if (typeof settings.background !== "undefined") {
+      const bgRelDir = typeof settings.background === "object" ? settings.background.image : settings.background;
+      const bgFsPath = join(process.cwd(), "public", bgRelDir);
+
+      if (existsSync(bgFsPath) && statSync(bgFsPath).isDirectory()) {
+        const bgs = [];
+        let bg = "";
+        readdirSync(bgFsPath).forEach((file) => {
+          bgs.push(join(bgRelDir, file));
+        });
+
+        if (bgs.length > 0) bg = bgs[Math.floor(Math.random() * bgs.length)];
+
+        if (typeof settings.background === "object") settings.background.image = bg;
+        else settings.background = bg;
+      }
+    }
 
     return {
       props: {
