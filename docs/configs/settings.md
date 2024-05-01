@@ -52,6 +52,11 @@ and then reference that image:
 background: /images/background.png
 ```
 
+### Random Image Backgrounds
+
+If you'd like to show more than one background image, you can provide a folder with the images of your choice.
+On every load/refresh a random picture from the foler will be used as background.
+
 ### Background Opacity & Filters
 
 You can specify filters to apply over your background image for blur, saturation and brightness as well as opacity to blend with the background color. The first three filter settings use tailwind CSS classes, see notes below regarding the options for each. You do not need to specify all options.
